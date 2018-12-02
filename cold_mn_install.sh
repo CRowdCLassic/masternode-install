@@ -1,19 +1,18 @@
 #!/bin/bash
 
 TMP_FOLDER=$(mktemp -d)
-CONFIG_FILE='crowdcoin.conf'
-CONFIGFOLDER='/root/.crowdcoincore'
-COIN_DAEMON='crowdcoind'
-COIN_VERSION='v1.1.0'
-COIN_CLI='crowdcoin-cli'
-COIN_PATH='/usr/local/bin/'
-COIN_REPO='https://github.com/crowdcoinChain/Crowdcoin.git'
-COIN_TGZ='https://github.com/crowdcoinChain/Crowdcoin/releases/download/1.1.0/Crowdcoin_command_line_binaries_linux_1.1.tar.gz'
-COIN_BINDIR='Crowdcoin_command_line_binaries_linux_1.1'
+CONFIG_FILE='crowdclassic.conf'
+CONFIGFOLDER='/root/.crowdclassiccore'
+COIN_DAEMON='crowdclassicd'
+COIN_VERSION='v0.12.1.8'
+COIN_CLI='crowdclassic-cli'
+COIN_PATH='/usr/local/bin/'CRowdCLassic/crowdclassic-core.git'
+COIN_TGZ='https://github.com/CRowdClassic/crowdclassic-core/releases/download/0.12.1.8/CRowdCLassicCore.x64.linux.tar.gz'
+COIN_BINDIR='crowdclassiccore'
 COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
-SENTINEL_REPO='https://github.com/crowdcoinChain/sentinelLinux.git'
+SENTINEL_REPO='https://github.com/CRowdClassic/sentinelLinux.git'
 #COIN_BOOTSTRAP='XX'
-COIN_NAME='crowdcoin'
+COIN_NAME='crowdclassic'
 COIN_PORT=12875
 RPC_PORT=11998
 NODEIP=$(curl -s4 icanhazip.com)
@@ -39,8 +38,8 @@ purgeOldInstallation() {
 	cd /usr/local/bin && sudo rm $COIN_CLI $COIN_DAEMON > /dev/null 2>&1 && cd
     cd /usr/bin && sudo rm $COIN_CLI $COIN_DAEMON > /dev/null 2>&1 && cd
         sudo rm -rf ~/$CONFIGFOLDER > /dev/null 2>&1
-    #remove binaries and Crowdcoin utilities
-    cd /usr/local/bin && sudo rm crowdcoin-cli crowdcoin-tx crowdcoind > /dev/null 2>&1 && cd
+    #remove binaries and CRowdCLassic utilities
+    cd /usr/local/bin && sudo rm crowdclassic-cli crowdclassic-tx crowdclassicd > /dev/null 2>&1 && cd
 }
 
 function install_sentinel() {
@@ -51,7 +50,7 @@ function install_sentinel() {
   export LC_ALL=C
   virtualenv ./venv >/dev/null 2>&1
   ./venv/bin/pip install -r requirements.txt >/dev/null 2>&1
-  sed -i -e 's/dash_conf=\/home\/YOURUSERNAME\/\.crowdcoincore\/crowdcoin\.conf/dash_conf=\/root\/.crowdcoincore\/crowdcoin.conf/g' sentinel.conf
+  sed -i -e 's/dash_conf=\/home\/YOURUSERNAME\/\.crowdclassiccore\/crowdclassic\.conf/dash_conf=\/root\/.crowdclassiccore\/crowdclassic.conf/g' sentinel.conf
   echo  "* * * * * cd $CONFIGFOLDER/sentinelLinux && ./venv/bin/python bin/sentinel.py >> $CONFIGFOLDER/sentinel.log 2>&1" > $CONFIGFOLDER/$COIN_NAME.cron
   crontab $CONFIGFOLDER/$COIN_NAME.cron
   rm $CONFIGFOLDER/$COIN_NAME.cron >/dev/null 2>&1
@@ -169,23 +168,28 @@ externalip=$NODEIP:$COIN_PORT
 masternodeprivkey=$COINKEY
 
 #ADDNODES
-addnode=96.126.124.245
-addnode=121.200.4.203
-addnode=188.165.52.69
-addnode=207.148.121.239
-addnode=84.17.23.43:12875
-addnode=18.220.138.90:12875
-addnode=86.57.164.166:12875
-addnode=86.57.164.146:12875
-addnode=18.217.78.145:12875
-addnode=23.92.30.230:12875
-addnode=35.190.182.68:12875
-addnode=80.209.236.4:12875
-addnode=91.201.40.89:12875 
+addnode=212.237.55.250
+addnode=80.211.87.193 
 
 EOF
 }
 
+
+function enable_fail2ban() {
+  touch /etc/fail2ban/jail.local
+  cat > /etc/fail2ban/jail.local << EOL
+  [ssh]
+  enabled = true
+  port = ssh
+  filter = sshd
+  logpath = /var/log/auth.log
+  maxretry = 6
+  bantime = 3600
+  bantime.increment = true
+  bantime.rndtime = 10m
+  EOL
+  service fail2ban restart >/dev/null 2>&1
+}
 
 function enable_firewall() {
   echo -e "Installing and setting up firewall to allow port ${GREEN}$COIN_PORT${NC}"
@@ -262,7 +266,7 @@ apt-get install libzmq3-dev -y >/dev/null 2>&1
 apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" make software-properties-common \
 build-essential libtool autotools-dev autoconf libssl-dev libboost-dev libboost-chrono-dev libboost-filesystem-dev libboost-program-options-dev \
 libboost-system-dev libboost-test-dev libboost-thread-dev libboost-all-dev sudo automake git wget curl libdb4.8-dev bsdmainutils libdb4.8++-dev \
-libminiupnpc-dev libgmp3-dev ufw pkg-config libevent-dev  libdb5.3++ unzip libzmq5 >/dev/null 2>&1
+libminiupnpc-dev libgmp3-dev ufw fail2ban pkg-config libevent-dev  libdb5.3++ unzip libzmq5 >/dev/null 2>&1
 if [ "$?" -gt "0" ];
   then
     echo -e "${RED}Not all required packages were installed properly. Try to install them manually by running the following commands:${NC}\n"
@@ -282,7 +286,7 @@ function important_information() {
  clear
  echo
  echo -e "${BLUE}================================================================================================================================${NC}"
- echo -e "${CYAN}Guide: https://github.com/crowdcoinChain/ScriptEasyInstall/blob/master/README.md${NC}"
+ echo -e "${CYAN}Guide: https://github.com/CRowdClassic/crowdclassic-core/crcl-masternode-install/blob/master/README.md${NC}"
  echo -e "${BLUE}================================================================================================================================${NC}"
  echo -e "${RED}$COIN_NAME${NC} masternode is up and running and listening on port ${PURPLE}$COIN_PORT${NC}."
  echo -e "${BLUE}${NC}"
@@ -298,18 +302,18 @@ function important_information() {
  echo -e "${GREEN}VPS_IP:PORT ${NC}${PURPLE}$NODEIP:$COIN_PORT${NC}"
  echo -e "${GREEN}MASTERNODE GENKEY: ${NC}${PURPLE}$COINKEY${NC}"
  echo -e "${BLUE}${NC}"
- echo -e "${CYAN}Ensure your masternode is fully SYNCED with the BLOCKCHAIN${NC}"
- echo -e "https://explorer.crowdcoin.site/"
- echo -e "Masternode config: ${PURPLE}<ALIAS> $NODEIP:$COIN_PORT $COINKEY <TX> <ID>${NC}"
+ echo -e "When synced, on your Windows wallet, create masternode.conf file"
+ echo -e "Enter the following line: ${PURPLE}<ALIAS> $NODEIP:$COIN_PORT $COINKEY <TX> <ID>${NC}"
+ echo -e "Then restart your Windows Wallet, you should see your masternode in the masternode tab"
+ echo -e "Select your masternode and hit start-alias to start your masternode"
  echo -e "${BLUE}${NC}"
  echo -e "${BLUE}================================================================================================================================${NC}"
  echo -e "To monitor, run the following commands on your vps:"
- echo -e "${RED}crowdcoin-cli masternode status${NC}"
- echo -e "${RED}crowdcoin-cli getinfo${NC}"
- echo -e "${RED}crowdcoin-cli mnsync status${NC}"
+ echo -e "${RED}crowdclassic-cli masternode status${NC}"
+ echo -e "${RED}crowdclassic-cli getinfo${NC}"
+ echo -e "${RED}crowdclassic-cli mnsync status${NC}"
  echo -e "${BLUE}================================================================================================================================${NC}"
- echo -e "${YELLOW}DONATION (CRC): CV8WdSZKp4rcTUxMLoPg8WcS1PdqEjgREV${NC}"
- echo -e "${YELLOW}DONATION (ETH): 0x06E4454CB946038E3252eD1d5B3fDafb85E089F5${NC}"
+ echo -e "${YELLOW}DONATION (CRCL): CLaUTqyiDcs1Hens3Qxpb7JSx6sKKTSjNn${NC}"
  echo -e "${BLUE}================================================================================================================================${NC}"
 }
 
@@ -318,6 +322,7 @@ function setup_node() {
   create_config
   create_key
   update_config
+  enable_fail2ban
   enable_firewall
   #grab_bootstrap
   install_sentinel
