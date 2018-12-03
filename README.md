@@ -120,12 +120,12 @@ The transaction and output ID from the deposit you made into your masternode pub
 ***Step 7***
 * Paste the code below into Putty to ***download*** the masternode install script.
 
-`wget -q https://raw.githubusercontent.com/ronaldr1987/crowdclassic/master/crowdclassic_install.sh`
+`wget -q https://raw.githubusercontent.com/CRowdCLassic/masternode-install/master/cold_mn_install.sh`
 
 ***Step 8***
 * Paste the code below into Putty, then press ***enter*** to start the masternode installation.
 
-`bash crowdclassic_mn_install.sh`
+`bash cold_mn_install.sh`
 
 ***Step 9***
 * Wait for the installation to ***finish*** (this will take approximately 10-20 minutes)

@@ -43,7 +43,7 @@ fi
 
 
 ADD_SWAP=N
-GITHUB_DL=https://github.com/CRowdClassic/crowdclassic-core/releases/download/0.12.1.8/CRowdCLassicCore.x64.linux.tar.gz
+GITHUB_DL=https://github.com/CRowdClassic/crowdclassic-core/releases/download/0.12.1.8/CRowdCLassicCore-bin.0.12.1.8.x64.linux.tar.gz
 RPCPORT=11998
 CRCPORT=12875
 
@@ -176,7 +176,7 @@ sudo apt-get update
 sudo apt-get install libdb4.8-dev libdb4.8++-dev wget -y
 
 wget $GITHUB_DL
-tar -zxvf ./CRowdCLassicCore.x64.linux.tar.gz
+tar -zxvf ./CRowdCLassicCore-bin.0.12.1.8.x64.linux.tar.gz
 
 echo ""
 echo "==============================================="
