@@ -268,7 +268,7 @@ while [[ ! ($masternodeStartOutput = *"started"*) ]]; do
         block=`./crowdclassic-cli getinfo | grep block | tr -d ,`
         balance=`./crowdclassic-cli getbalance`
         masternodeStartOutput=$(./crowdclassic-cli masternode status)
-        printf "\r$block | Balance : $balance ${spin:$i:1}"
+        printf "\r$block | Balance : $balance ${spin:$i:1} : $masternodeStartOutput                "
         sleep 5
 done
 echo ""
