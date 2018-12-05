@@ -43,7 +43,7 @@ fi
 
 
 ADD_SWAP=N
-GITHUB_DL=https://github.com/CRowdClassic/crowdclassic-core/releases/download/0.12.1.8/CRowdCLassicCore-bin.0.12.1.8.x64.linux.tar.gz
+GITHUB_DL=https://github.com/CRowdCLassic/crowdclassic-core/releases/download/v0.12.1.8-beta/CRowdCLassicCore-bin.0.12.1.8.x64.linux.tar.gz
 RPCPORT=11998
 CRCPORT=12875
 
