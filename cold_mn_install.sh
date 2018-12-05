@@ -240,7 +240,7 @@ echo ""
 # echo "if not already done, send the Masternode collateral to this new address: $masterNodeAccountAddress"
 # fi
 echo "Now waiting Masternode Sync"
-echo "Checking every 20 seconds ..."
+echo "Checking every 5 seconds ..."
 spin='-\|/'
 # while [ ${#masternodeOutputs} -le 3 ]; do
 #         i=$(( (i+1) %4 ))
@@ -261,23 +261,22 @@ spin='-\|/'
 # sleep 60
 # ./crowdclassicd -daemon
 sleep 10
-masternodeStartOutput=$(./crowdclassic-cli masternode status)
-# echo $masternodeStartOutput
+masternodeStartOutput=$(./crowdclassic-cli masternode start)
+echo $masternodeStartOutput
 while [[ ! ($masternodeStartOutput = *"started"*) ]]; do
         i=$(( (i+1) %4 ))
         block=`./crowdclassic-cli getinfo | grep block | tr -d ,`
-        synced=`./crowdclassic-cli mnsync status | grep IsSync | tr -d ,`
-#        masternodeStartOutput=$(./crowdclassic-cli masternode status)
-#        printf "\r$block | balance : $balance ${spin:$i:1} : $masternodeStartOutput                "
-        printf "\r$block | $synced ${spin:$i:1}"
-        sleep 20
+        balance=`./crowdclassic-cli getbalance`
+        masternodeStartOutput=$(./crowdclassic-cli masternode start)
+        printf "\r$block | Balance : $balance ${spin:$i:1} : $masternodeStartOutput                "
+        sleep 5
 done
 echo ""
 echo "Add sentinelLinux in crontab"
 (crontab -l 2>/dev/null; echo "* * * * * cd ~/sentinelLinux && ./venv/bin/python bin/sentinel.py 2>&1 >> sentinel-cron.log") | crontab -
 echo ""
-# echo "Add check MN Status in crontab"
-# (crontab -l 2>/dev/null; echo "* * * * * cd ~/masternode-install &  bash check_status.sh 2>&1 >> mn-check-cron.log") | crontab -
+echo "Add check MN Status in crontab"
+(crontab -l 2>/dev/null; echo "* * * * * cd ~/masternode-install &  bash check_status.sh 2>&1 >> mn-check-cron.log") | crontab -
 sudo service cron reload
 echo "$masternodeStartOutput"
 sudo apt-get autoremove -y
