@@ -240,7 +240,7 @@ echo ""
 # echo "if not already done, send the Masternode collateral to this new address: $masterNodeAccountAddress"
 # fi
 echo "Now waiting Masternode Sync"
-echo "Checking every 60 seconds ..."
+echo "Checking every 20 seconds ..."
 spin='-\|/'
 # while [ ${#masternodeOutputs} -le 3 ]; do
 #         i=$(( (i+1) %4 ))
@@ -262,15 +262,15 @@ spin='-\|/'
 # ./crowdclassicd -daemon
 sleep 10
 masternodeStartOutput=$(./crowdclassic-cli masternode status)
-echo $masternodeStartOutput
+# echo $masternodeStartOutput
 while [[ ! ($masternodeStartOutput = *"started"*) ]]; do
         i=$(( (i+1) %4 ))
         block=`./crowdclassic-cli getinfo | grep block | tr -d ,`
         synced=`./crowdclassic-cli mnsync status | grep IsSync | tr -d ,`
 #        masternodeStartOutput=$(./crowdclassic-cli masternode status)
-#        printf "\r$block | Synced : $synced ${spin:$i:1} : $masternodeStartOutput                "
-        printf "\r$block | Synced : $synced ${spin:$i:1}"
-        sleep 60
+#        printf "\r$block | balance : $balance ${spin:$i:1} : $masternodeStartOutput                "
+        printf "\r$block | $synced ${spin:$i:1}"
+        sleep 20
 done
 echo ""
 echo "Add sentinelLinux in crontab"
