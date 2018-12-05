@@ -176,14 +176,14 @@ EOF
 
 
 function enable_fail2ban() {
-  touch /etc/fail2ban/jail.local >/dev/null 2>&1
-  cat << EOF >> /etc/fail2ban/jail.local
-maxretry = 6
-bantime = 3600
-bantime.increment = true
-bantime.rndtime = 10m
+#  touch /etc/fail2ban/jail.local >/dev/null 2>&1
+#  cat << EOF >> /etc/fail2ban/jail.local
+# maxretry = 6
+# bantime = 3600
+# bantime.increment = true
+# bantime.rndtime = 10m
 
-EOF
+# EOF
   service fail2ban restart >/dev/null 2>&1
 }
 
