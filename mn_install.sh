@@ -98,13 +98,13 @@ else
 fi
 
 # Add swap if needed
-read -p "Do you want to add memory swap file to your system (Y/n) ?" -n 1 -r -s ADD_SWAP
+read -p "Do you want to add 2GB memory swap file to your system (Y/n) ?" -n 1 -r -s ADD_SWAP
 # ADD_SWAP="y"
 if [[ ("$ADD_SWAP" == "y" || "$ADD_SWAP" == "Y" || "$ADD_SWAP" == "") ]]; then
         if [ ! -f /swapfile ]; then
             echo && echo "Adding swap space..."
             sleep 3
-            sudo fallocate -l $swap_size /swapfile
+            sudo fallocate -l 2048000000 /swapfile
             sudo chmod 600 /swapfile
             sudo mkswap /swapfile
             sudo swapon /swapfile

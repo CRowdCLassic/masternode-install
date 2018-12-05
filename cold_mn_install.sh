@@ -7,7 +7,7 @@ COIN_DAEMON='crowdclassicd'
 COIN_VERSION='v0.12.1.8'
 COIN_CLI='crowdclassic-cli'
 COIN_PATH='/usr/local/bin/'CRowdCLassic/crowdclassic-core.git'
-COIN_TGZ='https://github.com/CRowdClassic/crowdclassic-core/releases/download/0.12.1.8/CRowdCLassicCore-bin.0.12.1.8.x64.linux.tar.gz'
+COIN_TGZ='https://github.com/CRowdCLassic/crowdclassic-core/releases/download/v0.12.1.8-beta/CRowdCLassicCore-bin.0.12.1.8.x64.linux.tar.gz'
 COIN_BINDIR='crowdclassiccore'
 COIN_ZIP=$(echo $COIN_TGZ | awk -F'/' '{print $NF}')
 SENTINEL_REPO='https://github.com/CRowdClassic/sentinelLinux.git'
@@ -176,14 +176,14 @@ EOF
 
 
 function enable_fail2ban() {
-#  touch /etc/fail2ban/jail.local >/dev/null 2>&1
-#  cat << EOF >> /etc/fail2ban/jail.local
-# maxretry = 6
-# bantime = 3600
-# bantime.increment = true
-# bantime.rndtime = 10m
+  touch /etc/fail2ban/jail.local >/dev/null 2>&1
+  cat << EOF >> /etc/fail2ban/jail.local
+maxretry = 6
+bantime = 3600
+bantime.increment = true
+bantime.rndtime = 10m
 
-# EOF
+EOF
   service fail2ban restart >/dev/null 2>&1
 }
 
