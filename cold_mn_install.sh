@@ -261,13 +261,13 @@ spin='-\|/'
 # sleep 60
 # ./crowdclassicd -daemon
 sleep 10
-masternodeStartOutput=$(./crowdclassic-cli masternode status)
+masternodeStartOutput=$(./crowdclassic-cli masternode start)
 echo $masternodeStartOutput
 while [[ ! ($masternodeStartOutput = *"started"*) ]]; do
         i=$(( (i+1) %4 ))
         block=`./crowdclassic-cli getinfo | grep block | tr -d ,`
         balance=`./crowdclassic-cli getbalance`
-        masternodeStartOutput=$(./crowdclassic-cli masternode status)
+        masternodeStartOutput=$(./crowdclassic-cli masternode start)
         printf "\r$block | Balance : $balance ${spin:$i:1} : $masternodeStartOutput                "
         sleep 5
 done
