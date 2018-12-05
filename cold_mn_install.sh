@@ -318,7 +318,7 @@ function setup_node() {
   create_config
   create_key
   update_config
-  enable_fail2ban
+  #enable_fail2ban
   enable_firewall
   #grab_bootstrap
   install_sentinel
