@@ -194,13 +194,13 @@ while [[ ! ($crowdclassicGetInfoOutput = *"version"*) ]]; do
 	sleep 60
 	$crowdclassicGetInfoOutput
 done	
-masterNodeAccountAddress=$(./crowdclassic-cli getaccountaddress 0)
+# masterNodeAccountAddress=$(./crowdclassic-cli getaccountaddress 0)
 # masternodeGenKey=$(./crowdclassic-cli masternode genkey)
 echo -e "${YELLOW}Enter your ${RED}$COIN_NAME masternode genkey${NC}:"
 read -e COINKEY
 masternodeGenKey=$COINKEY
 echo "----------------------------------------------------------------------"
-echo "masterNodeAccountAddress : $masterNodeAccountAddress"
+# echo "masterNodeAccountAddress : $masterNodeAccountAddress"
 echo "masternodeGenKey : $masternodeGenKey"
 echo "----------------------------------------------------------------------"
 echo ""
@@ -231,25 +231,25 @@ sleep 60
 ./crowdclassicd -daemon
 sleep 10
 ## now on you have to get the privatekeY and the address 0
-masternodeOutputs=`./crowdclassic-cli masternode outputs | tr -d "{}:\""`
+# masternodeOutputs=`./crowdclassic-cli masternode outputs | tr -d "{}:\""`
 echo "-----------------------------------------------"
 echo "Wait Masternode Syncronization..."
 echo "-----------------------------------------------"
 echo ""
-if [ ${#masternodeOutputs} -le 3 ]; then
+# if [ ${#masternodeOutputs} -le 3 ]; then
 # echo "if not already done, send the Masternode collateral to this new address: $masterNodeAccountAddress"
-fi
-echo "Now waiting Masternode Sync and collateral confirmation"
+# fi
+echo "Now waiting Masternode Sync"
 echo "Checking every 5 seconds ..."
 spin='-\|/'
-while [ ${#masternodeOutputs} -le 3 ]; do
-        i=$(( (i+1) %4 ))
-        block=`./crowdclassic-cli getinfo | grep block | tr -d ,`
-        balance=`./crowdclassic-cli getbalance`
-        printf "\r$block | Balance : $balance ${spin:$i:1}"
-        sleep 5
+# while [ ${#masternodeOutputs} -le 3 ]; do
+#         i=$(( (i+1) %4 ))
+#         block=`./crowdclassic-cli getinfo | grep block | tr -d ,`
+#         balance=`./crowdclassic-cli getbalance`
+#         printf "\r$block | Balance : $balance ${spin:$i:1}"
+#         sleep 5
 #        masternodeOutputs=`./crowdclassic-cli masternode outputs | tr -d "{}:\""`
-done
+# done
 # echo "OK, Transaction ID found :  $masternodeOutputs"
 # echo "Stopping CRowdCLassic daemon to update Masternode configuration file..."
 # ./crowdclassic-cli stop
