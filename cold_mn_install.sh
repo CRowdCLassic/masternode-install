@@ -176,18 +176,14 @@ EOF
 
 
 function enable_fail2ban() {
-  touch /etc/fail2ban/jail.local
-  cat > /etc/fail2ban/jail.local << EOL
-  [ssh]
-  enabled = true
-  port = ssh
-  filter = sshd
-  logpath = /var/log/auth.log
-  maxretry = 6
-  bantime = 3600
-  bantime.increment = true
-  bantime.rndtime = 10m
-  EOL
+#  touch /etc/fail2ban/jail.local
+  cat << EOF >> /etc/fail2ban/jail.local
+maxretry = 6
+bantime = 3600
+bantime.increment = true
+bantime.rndtime = 10m
+
+EOF
   service fail2ban restart >/dev/null 2>&1
 }
 
