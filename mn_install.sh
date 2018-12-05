@@ -81,9 +81,9 @@ echo "--------------------------------------------------------------"
 read -p "Do you want to continue ? (Y/N)? " -n 1 -r
 echo
 if [[ ! $REPLY =~ ^[Yy]$ ]]
-# then
-#        echo "End of the script, nothing has been change."
-#    [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1
+then
+    echo "End of the script, nothing has been change."
+    [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1
 fi
 
 #Check if current user is allowd to sudo
