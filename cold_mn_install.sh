@@ -237,7 +237,7 @@ echo "Wait Masternode Syncronization..."
 echo "-----------------------------------------------"
 echo ""
 if [ ${#masternodeOutputs} -le 3 ]; then
- echo "if not already done, send the Masternode collateral to this new address: $masterNodeAccountAddress"
+# echo "if not already done, send the Masternode collateral to this new address: $masterNodeAccountAddress"
 fi
 echo "Now waiting Masternode Sync and collateral confirmation"
 echo "Checking every 5 seconds ..."
