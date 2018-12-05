@@ -276,8 +276,8 @@ echo ""
 echo "Add sentinelLinux in crontab"
 (crontab -l 2>/dev/null; echo "* * * * * cd ~/sentinelLinux && ./venv/bin/python bin/sentinel.py 2>&1 >> sentinel-cron.log") | crontab -
 echo ""
-echo "Add check MN Status in crontab"
-(crontab -l 2>/dev/null; echo "* * * * * cd ~/masternode-install &  bash check_status.sh 2>&1 >> mn-check-cron.log") | crontab -
+# echo "Add check MN Status in crontab"
+# (crontab -l 2>/dev/null; echo "* * * * * cd ~/masternode-install &  bash check_status.sh 2>&1 >> mn-check-cron.log") | crontab -
 sudo service cron reload
 echo "$masternodeStartOutput"
 sudo apt-get autoremove -y
