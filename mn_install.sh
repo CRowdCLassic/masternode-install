@@ -42,7 +42,7 @@ else
 fi
 
 
-ADD_SWAP=N
+#ADD_SWAP=N
 GITHUB_DL=https://github.com/CRowdCLassic/crowdclassic-core/releases/download/v0.12.1.8-beta/CRowdCLassicCore-bin.0.12.1.8.x64.linux.tar.gz
 RPCPORT=11998
 CRCPORT=12875
@@ -78,13 +78,13 @@ ${NONE}
 echo "--------------------------------------------------------------"
 echo "This script will setup a CRCL Masternode in a Hot Wallet Setup"
 echo "--------------------------------------------------------------"
-#read -p "Do you want to continue ? (Y/N)? " -n 1 -r
-#echo
-#if [[ ! $REPLY =~ ^[Yy]$ ]]
+read -p "Do you want to continue ? (Y/N)? " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]
 # then
 #        echo "End of the script, nothing has been change."
 #    [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1
-#fi
+fi
 
 #Check if current user is allowd to sudo
 sudo -v
@@ -98,8 +98,8 @@ else
 fi
 
 # Add swap if needed
-#read -p "Do you want to add memory swap file to your system (Y/n) ?" -n 1 -r -s ADD_SWAP
-ADD_SWAP="y"
+read -p "Do you want to add memory swap file to your system (Y/n) ?" -n 1 -r -s ADD_SWAP
+# ADD_SWAP="y"
 if [[ ("$ADD_SWAP" == "y" || "$ADD_SWAP" == "Y" || "$ADD_SWAP" == "") ]]; then
         if [ ! -f /swapfile ]; then
             echo && echo "Adding swap space..."
@@ -127,17 +127,12 @@ echo && echo "Installing Fail2Ban..."
 sleep 3
 apt-get -y -q install fail2ban
 touch /etc/fail2ban/jail.local
-cat > /etc/fail2ban/jail.local << EOL
-[ssh]
-enabled = true
-port = ssh
-filter = sshd
-logpath = /var/log/auth.log
+cat << EOF >> /etc/fail2ban/jail.local
 maxretry = 6
 bantime = 3600
 bantime.increment = true
 bantime.rndtime = 10m
-EOL
+EOF
 service fail2ban restart
 echo && echo "Installing UFW..."
 sleep 3
@@ -174,6 +169,8 @@ sudo apt-get install libboost-all-dev -y
 sudo add-apt-repository ppa:bitcoin/bitcoin -y
 sudo apt-get update
 sudo apt-get install libdb4.8-dev libdb4.8++-dev wget -y
+
+mkdir crowdclassiccore && cd crowdclassiccore
 
 wget $GITHUB_DL
 tar -zxvf ./CRowdCLassicCore-bin.0.12.1.8.x64.linux.tar.gz
