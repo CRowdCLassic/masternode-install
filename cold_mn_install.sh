@@ -314,7 +314,7 @@ function important_information() {
 }
 
 function setup_node() {
-  get_ip
+  #get_ip
   create_config
   create_key
   update_config
