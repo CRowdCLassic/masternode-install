@@ -47,34 +47,12 @@ GITHUB_DL=https://github.com/CRowdCLassic/crowdclassic-core/releases/download/v0
 RPCPORT=11998
 CRCLPORT=12875
 
-NONE='\033[00m'
-YELLOW='\033[01;33m'
 clear
 cd ~
 echo $PWD
-
-echo -e "${YELLOW}
-            ***************
-        (*********************/
-      ****************,  *,  ****
-    (*********.  .       *.  *****/
-   ********    ..            *******
-  *******.    ..******.      ********
-  ******     ,***********     *******%
- ******.    **************************
- ******    .**************************
- ******    ,**************************
- ******.    **************************
-  ******     ,***********,,,,,*******
-  *******.     .******.      ********
-   ********     ...          *******
-    ,*********.   ..     *.  ******
-      ****************,  *.  ****
-        ,*********************,
-            ***************
-
-${NONE}
-"
+echo
+echo "CRowdCLassic [CRCL]"
+echo
 echo "--------------------------------------------------------------"
 echo "This script will setup a CRCL Masternode in a Hot Wallet Setup"
 echo "--------------------------------------------------------------"
@@ -117,6 +95,28 @@ if [[ ("$ADD_SWAP" == "y" || "$ADD_SWAP" == "Y" || "$ADD_SWAP" == "") ]]; then
             echo && echo "WARNING: Swap file detected, skipping add swap!"
             sleep 3
         fi
+fi
+echo
+if [ ! -f /root/.crowdclassiccore/crowdclassic.conf ]; then
+   echo 
+else
+   echo "!!!ATTENTION!!!"
+   echo "Previous installation detected. Deleting after 20s."
+   echo "Press Crl+C to abort!"
+   sleep 20 
+    #kill wallet daemon
+    sudo killall crowdclassicd > /dev/null 2>&1
+    #remove old ufw port allow
+    sudo ufw delete allow 12875/tcp > /dev/null 2>&1
+    #remove old files
+    sudo rm -rf ~/crowdclassiccore > /dev/null 2>&1
+    sudo rm -rf ~/.crowdclassiccore > /dev/null 2>&1
+    sudo rm -rf ~/sentinelLinux > /dev/null 2>&1
+    sudo rm -rf ~/venv > /dev/null 2>&1
+    sudo rm -rf CRowdCLassicCore*.gz CRowdCLassicCore*.gz.* > /dev/null 2>&1
+    #remove binaries and CRowdCLassic utilities
+    cd /usr/bin && sudo rm crowdclassic-cli crowdclassic-tx crowdclassicd > /dev/null 2>&1
+    cd /usr/local/bin && sudo rm crowdclassic-cli crowdclassic-tx crowdclassicd > /dev/null 2>&1
 fi
 echo
 echo "updating system, please wait..."
