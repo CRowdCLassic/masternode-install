@@ -45,21 +45,14 @@ fi
 #ADD_SWAP=N
 GITHUB_DL=https://github.com/CRowdCLassic/crowdclassic-core/releases/download/v0.12.1.8-beta/CRowdCLassicCore-bin.0.12.1.8.x64.linux.tar.gz
 RPCPORT=11998
-CRCPORT=12875
-NODEIP=$(curl -s4 icanhazip.com)
+CRCLPORT=12875
 
-NONE='\033[00m'
-YELLOW='\033[01;33m'
 clear
 cd ~
 echo $PWD
-
-echo -e "${YELLOW}
-
-CRowdCLassic
-
-${NONE}
-"
+echo
+echo "CRowdCLassic [CRCL]"
+echo
 echo "--------------------------------------------------------------"
 echo "This script will setup a CRCL Masternode in a Hot Wallet Setup"
 echo "--------------------------------------------------------------"
@@ -104,6 +97,30 @@ if [[ ("$ADD_SWAP" == "y" || "$ADD_SWAP" == "Y" || "$ADD_SWAP" == "") ]]; then
         fi
 fi
 echo
+if [ ! -f /root/.crowdclassiccore/crowdclassic.conf ]; then
+   echo 
+else
+   echo
+   echo
+   echo "!!!ATTENTION!!!"
+   echo "Previous installation detected. Deleting after 20s."
+   echo "Press Crl+C to abort!"
+   sleep 20 
+    #kill wallet daemon
+    sudo killall crowdclassicd > /dev/null 2>&1
+    #remove old ufw port allow
+    sudo ufw delete allow 12875/tcp > /dev/null 2>&1
+    #remove old files
+    sudo rm -rf ~/crowdclassiccore > /dev/null 2>&1
+    sudo rm -rf ~/.crowdclassiccore > /dev/null 2>&1
+    sudo rm -rf ~/sentinelLinux > /dev/null 2>&1
+    sudo rm -rf ~/venv > /dev/null 2>&1
+    sudo rm -rf CRowdCLassicCore*.gz CRowdCLassicCore*.gz.* > /dev/null 2>&1
+    #remove binaries and CRowdCLassic utilities
+    cd /usr/bin && sudo rm crowdclassic-cli crowdclassic-tx crowdclassicd > /dev/null 2>&1
+    cd /usr/local/bin && sudo rm crowdclassic-cli crowdclassic-tx crowdclassicd > /dev/null 2>&1
+fi
+echo
 echo "updating system, please wait..."
 sudo apt-get -y -q update -y
 sudo apt-get -y -q upgrade -y
@@ -128,7 +145,7 @@ sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow ssh
 sudo ufw limit ssh/tcp
-sudo ufw allow $CRCPORT/tcp
+sudo ufw allow $CRCLPORT/tcp
 sudo ufw logging on
 echo "y" | sudo ufw enable
 echo && echo "Firewall installed and enabled!"
@@ -170,6 +187,7 @@ then
     cd ~/crowdclassiccore
     echo "Found crowdclassicd is running, stopping it..."
     ./crowdclassic-cli stop
+    cp crowdclassic* /usr/local/bin
     echo "Waiting 60 seconds before continuing..." 
     sleep 60
 fi
@@ -205,6 +223,7 @@ echo "masternodeGenKey : $masternodeGenKey"
 echo "----------------------------------------------------------------------"
 echo ""
 echo "Stopping CRowdCLassic daemon to update configuration file..."
+echo " Waiting 60 seconds before restarting..."
 ./crowdclassic-cli stop
 sleep 60
 #write all data into ../crowdclassicd
@@ -220,6 +239,9 @@ daemon=1
 staking=0
 discover=1
 masternode=1
+logintimestamps=1
+maxconnections=256
+externalip=$NODEIP:$CRCLPORT
 masternodeprivkey=$masternodeGenKey
 addnode=212.237.55.250
 addnode=80.211.87.193 
@@ -230,45 +252,14 @@ echo " Waiting 60 seconds before restarting..."
 sleep 60
 ./crowdclassicd -daemon
 sleep 10
-## now on you have to get the privatekeY and the address 0
-# masternodeOutputs=`./crowdclassic-cli masternode outputs | tr -d "{}:\""`
-echo "-----------------------------------------------"
-echo "Wait Masternode Syncronization..."
-echo "-----------------------------------------------"
-echo ""
-# if [ ${#masternodeOutputs} -le 3 ]; then
-# echo "if not already done, send the Masternode collateral to this new address: $masterNodeAccountAddress"
-# fi
-echo "Now waiting Masternode Sync"
-echo "Checking every 5 seconds ..."
-spin='-\|/'
-# while [ ${#masternodeOutputs} -le 3 ]; do
-#         i=$(( (i+1) %4 ))
-#         block=`./crowdclassic-cli getinfo | grep block | tr -d ,`
-#         balance=`./crowdclassic-cli getbalance`
-#         printf "\r$block | Balance : $balance ${spin:$i:1}"
-#         sleep 5
-#        masternodeOutputs=`./crowdclassic-cli masternode outputs | tr -d "{}:\""`
-# done
-# echo "OK, Transaction ID found :  $masternodeOutputs"
-# echo "Stopping CRowdCLassic daemon to update Masternode configuration file..."
-# ./crowdclassic-cli stop
-# sleep 10
-# locateMasternode=~/.crowdclassiccore/masternode.conf
-# masternodeConfSample="mn1 127.0.0.1:$CRCPORT $masternodeGenKey $masternodeOutputs"
-# echo $masternodeConfSample >> $locateMasternode
-# echo "Masternode configuration updated. Waiting 60 seconds before restarting..."
-# sleep 60
-# ./crowdclassicd -daemon
-sleep 10
-masternodeStartOutput=$(./crowdclassic-cli masternode start)
-echo $masternodeStartOutput
-while [[ ! ($masternodeStartOutput = *"started"*) ]]; do
+masternodeStartOutput=$(~/crowdclassiccore/./crowdclassic-cli mnsync status | grep IsSynced | tr -d ,)
+#echo $masternodeStartOutput
+while [[ ! ($masternodeStartOutput = *"true"*) ]]; do
         i=$(( (i+1) %4 ))
-        block=`./crowdclassic-cli getinfo | grep block | tr -d ,`
-        balance=`./crowdclassic-cli getbalance`
-        masternodeStartOutput=$(./crowdclassic-cli masternode start)
-        printf "\r$block | Balance : $balance ${spin:$i:1} : $masternodeStartOutput                "
+        block=`~/crowdclassiccore/./crowdclassic-cli getinfo | grep block | tr -d ,`
+#        sync=`~/crowdclassiccore/./crowdclassic-cli mnsync status | grep IsSynced | tr -d ,`
+#        masternodeStartOutput=$(~/crowdclassiccore/./crowdclassic-cli masternode start)
+        printf "\r$block | ${spin:$i:1} : $masternodeStartOutput                "
         sleep 5
 done
 echo ""
@@ -281,3 +272,4 @@ sudo service cron reload
 echo "$masternodeStartOutput"
 sudo apt-get autoremove -y
 sudo apt-get clean -y
+ 
