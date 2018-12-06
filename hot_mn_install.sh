@@ -102,9 +102,19 @@ if [ ! -f /root/.crowdclassiccore/crowdclassic.conf ]; then
 else
    echo
    echo
-   echo "!!!ATTENTION!!!"
-   echo "Previous installation detected. Deleting after 20s."
-   echo "Press Crl+C to abort!"
+echo "--------------------------------------------------------------"
+echo "!!! Previous installation detected. It will be deleted. !!!"
+echo "--------------------------------------------------------------"
+read -p "Do you want to continue ? (Y/N)? " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+    echo "End of the script, nothing has been change."
+    [[ "$0" = "$BASH_SOURCE" ]] && exit 1 || return 1
+fi
+#   echo "!!!ATTENTION!!!"
+#   echo "Previous installation detected. Deleting after 20s."
+   echo "Deleting... Press Crl+C to abort!"
    sleep 20 
     #kill wallet daemon
     sudo killall crowdclassicd > /dev/null 2>&1
