@@ -29,7 +29,7 @@ if [ -d "$BIN_DIR" ]; then
   cd $BIN_DIR
   if [ -f "$CRCL_CLI" ]; then
         masternodestatus=""
-        masternodestatus="$(./$CRC_CLI masternode status 2>/dev/null | grep "vin" | tr -d "{},:\"")"
+        masternodestatus="$(./$CRCL_CLI masternode status 2>/dev/null | grep "vin" | tr -d "{},:\"")"
         if [[ $masternodestatus = "" ]]; then
                 echo "$TIMESTAMP : ERROR : can not connect to masternode"
                 exit 1
