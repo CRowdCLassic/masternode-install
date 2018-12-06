@@ -1,4 +1,4 @@
-# EasyResync
+ EasyResync
 # completenatary script needed in case the wallet goes out sync often 
 # in order to automate it 
 # crontab -e
@@ -6,10 +6,10 @@
 # * */7 * * * cd && cd bash resync.sh
 # then save with the choosen editor the basic one is vi so :q + enter will save and close it
 
-cd crowdclassiccore && ./crowdclassic-cli stop
+cd ~/crowdclassiccore && ./crowdclassic-cli stop
 sleep 10
 cd
-cd .crowdclassiccore
+cd ~/.crowdclassiccore
 rm governance.dat
 rm netfulfilled.dat
 rm peers.dat
@@ -20,7 +20,17 @@ rm fee_estimates.dat
 rm mnpayments.dat
 rm banlist.dat
 cd
-cd crowdclassiccore && ./crowdclassicd -daemon -reindex
+cd ~/crowdclassiccore && ./crowdclassicd -daemon -reindex
 sleep 5
+echo
+echo
+echo "Wait until blocks stop changing"
+echo "Then press Crl+C"
+sleep 10
+watch ./crowdclassic-cli getinfo
+echo
+echo
+echo "Wait until IsSynced = true"
+echo "Then press Crl+C"
+sleep 10
 watch ./crowdclassic-cli mnsync status
-

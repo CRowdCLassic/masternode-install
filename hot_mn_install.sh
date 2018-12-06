@@ -100,6 +100,8 @@ echo
 if [ ! -f /root/.crowdclassiccore/crowdclassic.conf ]; then
    echo 
 else
+   echo
+   echo
    echo "!!!ATTENTION!!!"
    echo "Previous installation detected. Deleting after 20s."
    echo "Press Crl+C to abort!"
@@ -185,6 +187,7 @@ then
     cd ~/crowdclassiccore
     echo "Found crowdclassicd is running, stopping it..."
     ./crowdclassic-cli stop
+    cp crowdclassic* /usr/local/bin
     echo "Waiting 60 seconds before continuing..." 
     sleep 60
 fi
@@ -217,6 +220,7 @@ echo "masternodeGenKey : $masternodeGenKey"
 echo "----------------------------------------------------------------------"
 echo ""
 echo "Stopping CRowdCLassic daemon to update configuration file..."
+echo " Waiting 60 seconds before restarting..."
 ./crowdclassic-cli stop
 sleep 60
 #write all data into ../crowdclassicd
