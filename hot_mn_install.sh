@@ -45,7 +45,7 @@ fi
 #ADD_SWAP=N
 GITHUB_DL=https://github.com/CRowdCLassic/crowdclassic-core/releases/download/v0.12.1.8-beta/CRowdCLassicCore-bin.0.12.1.8.x64.linux.tar.gz
 RPCPORT=11998
-CRCPORT=12875
+CRCLPORT=12875
 
 NONE='\033[00m'
 YELLOW='\033[01;33m'
@@ -143,7 +143,7 @@ sudo ufw default deny incoming
 sudo ufw default allow outgoing
 sudo ufw allow ssh
 sudo ufw limit ssh/tcp
-sudo ufw allow $CRCPORT/tcp
+sudo ufw allow $CRCLPORT/tcp
 sudo ufw logging on
 echo "y" | sudo ufw enable
 echo && echo "Firewall installed and enabled!"
@@ -267,7 +267,7 @@ echo "Stopping CRowdCLassic daemon to update Masternode configuration file..."
 ./crowdclassic-cli stop
 sleep 10
 locateMasternode=~/.crowdclassiccore/masternode.conf
-masternodeConfSample="mn1 127.0.0.1:$CRCPORT $masternodeGenKey $masternodeOutputs"
+masternodeConfSample="mn1 127.0.0.1:$CRCLPORT $masternodeGenKey $masternodeOutputs"
 echo $masternodeConfSample >> $locateMasternode
 echo "Masternode configuration updated. Waiting 60 seconds before restarting..."
 sleep 60
