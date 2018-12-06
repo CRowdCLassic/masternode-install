@@ -46,6 +46,7 @@ fi
 GITHUB_DL=https://github.com/CRowdCLassic/crowdclassic-core/releases/download/v0.12.1.8-beta/CRowdCLassicCore-bin.0.12.1.8.x64.linux.tar.gz
 RPCPORT=11998
 CRCLPORT=12875
+NODEIP=$(curl -s4 icanhazip.com)
 
 clear
 cd ~
