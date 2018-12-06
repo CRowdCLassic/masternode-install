@@ -1,4 +1,4 @@
- EasyResync
+# EasyResync
 # completenatary script needed in case the wallet goes out sync often 
 # in order to automate it 
 # crontab -e
