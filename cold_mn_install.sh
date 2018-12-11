@@ -217,7 +217,7 @@ rpcpassword=${rpcpass}" >> crowdclassic.conf
 cd ~/crowdclassiccore
 echo "Starting CRowdCLassic daemon from $PWD"
 ./crowdclassicd -daemon
-sleep 60
+sleep 120
 crowdclassicGetInfoOutput=$(./crowdclassic-cli getinfo)
 while [[ ! ($crowdclassicGetInfoOutput = *"version"*) ]]; do
 	sleep 60
@@ -262,7 +262,7 @@ echo "Configuration $locateCRowdCLassicConf updated."
 echo " Waiting 60 seconds before restarting..."
 sleep 60
 ./crowdclassicd -daemon
-sleep 10
+sleep 120
 masternodeStartOutput=$(~/crowdclassiccore/./crowdclassic-cli mnsync status | grep IsSynced | tr -d ,)
 #echo $masternodeStartOutput
 while [[ ! ($masternodeStartOutput = *"true"*) ]]; do
