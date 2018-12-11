@@ -212,7 +212,7 @@ Note that even a dedicated server can go down from time to time. When this happe
 
 ***Q7: My masternode is stuck on block 'xxx', how can i perform a reindex?***
 
-`systemctl stop crowdclassic.service`
+`crowdclassic-cli stop`
 
 `crowdclassicd -daemon -reindex`
 
