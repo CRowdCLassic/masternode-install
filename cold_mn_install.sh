@@ -2,7 +2,7 @@
 # mn_install.sh
 # Version 0.2
 # Date : 02.12.2018
-# This script will install a CRCL Hot Wallet Masternode in the default folder location
+# This script will install a CRCL Cold Wallet Masternode in the default folder location
 
 if [ -f /etc/os-release ]; then
     # freedesktop.org and systemd
@@ -55,7 +55,7 @@ echo
 echo "CRowdCLassic [CRCL]"
 echo
 echo "--------------------------------------------------------------"
-echo "This script will setup a CRCL Masternode in a Hot Wallet Setup"
+echo "This script will setup a CRCL Masternode in a Cold Wallet Setup"
 echo "--------------------------------------------------------------"
 read -p "Do you want to continue ? (Y/N)? " -n 1 -r
 echo
