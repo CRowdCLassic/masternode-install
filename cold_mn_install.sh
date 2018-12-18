@@ -43,7 +43,7 @@ fi
 
 
 #ADD_SWAP=N
-GITHUB_DL=https://github.com/CRowdCLassic/crowdclassic-core/releases/download/v0.12.1.8-beta/CRowdCLassicCore-bin.0.12.1.8.x64.linux.tar.gz
+GITHUB_DL=https://github.com/CRowdCLassic/crowdclassic-core/releases/download/v0.12.1.9-beta/CRowdCLassicCore-bin.0.12.1.9.x64.linux.tar.gz
 RPCPORT=11998
 CRCLPORT=12875
 NODEIP=$(curl -s4 icanhazip.com)
@@ -186,7 +186,7 @@ sudo apt-get install libdb4.8-dev libdb4.8++-dev wget -y
 mkdir crowdclassiccore && cd crowdclassiccore
 
 wget $GITHUB_DL
-tar -zxvf ./CRowdCLassicCore-bin.0.12.1.8.x64.linux.tar.gz
+tar -zxvf ./CRowdCLassicCore-bin.0.12.1.9.x64.linux.tar.gz
 
 echo ""
 echo "==============================================="
