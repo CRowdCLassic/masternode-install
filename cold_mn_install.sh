@@ -201,10 +201,15 @@ then
     cd ~/crowdclassiccore
     echo "Found crowdclassicd is running, stopping it..."
     ./crowdclassic-cli stop
-    sudo cp crowdclassic* /usr/local/bin
     echo "Waiting 60 seconds before continuing..." 
     sleep 60
 fi
+echo ""
+echo "==============================================="
+echo " Copying bin files to /usr/local/bin           "
+echo "==============================================="
+echo ""
+sudo cp crowdclassic* /usr/local/bin
 echo "-----------------------------------------------"
 echo "Setting up crowdclassic.conf RPC user and password"
 echo "-----------------------------------------------"
