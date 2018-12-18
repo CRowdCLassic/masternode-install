@@ -270,7 +270,7 @@ sleep 60
 sleep 120
 echo "-----------------------------------------------"
 echo "Now waiting Masternode Sync"
-echo "Checking every 5 seconds ..."
+echo "Checking every 2 seconds ..."
 echo "-----------------------------------------------"
 spin='-\|/'
 masternodeStartOutput=$(~/crowdclassiccore/./crowdclassic-cli mnsync status | grep IsSynced | tr -d ,)
@@ -280,8 +280,9 @@ while [[ ! ($masternodeStartOutput = *"true"*) ]]; do
         block=`~/crowdclassiccore/./crowdclassic-cli getinfo | grep block | tr -d ,`
 #        sync=`~/crowdclassiccore/./crowdclassic-cli mnsync status | grep IsSynced | tr -d ,`
 #        masternodeStartOutput=$(~/crowdclassiccore/./crowdclassic-cli masternode start)
+        masternodeStartOutput=$(~/crowdclassiccore/./crowdclassic-cli mnsync status | grep IsSynced | tr -d ,)
         printf "\r$block | ${spin:$i:1} : $masternodeStartOutput                "
-        sleep 5
+        sleep 2
 done
 echo ""
 echo "Add sentinelLinux in crontab"
