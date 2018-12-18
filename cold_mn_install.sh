@@ -210,6 +210,7 @@ echo " Copying bin files to /usr/local/bin           "
 echo "==============================================="
 echo ""
 sudo cp crowdclassic* /usr/local/bin
+echo ""
 echo "-----------------------------------------------"
 echo "Setting up crowdclassic.conf RPC user and password"
 echo "-----------------------------------------------"
