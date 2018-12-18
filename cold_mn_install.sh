@@ -263,6 +263,11 @@ echo " Waiting 60 seconds before restarting..."
 sleep 60
 ./crowdclassicd -daemon
 sleep 120
+echo "-----------------------------------------------"
+echo "Now waiting Masternode Sync"
+echo "Checking every 5 seconds ..."
+echo "-----------------------------------------------"
+spin='-\|/'
 masternodeStartOutput=$(~/crowdclassiccore/./crowdclassic-cli mnsync status | grep IsSynced | tr -d ,)
 #echo $masternodeStartOutput
 while [[ ! ($masternodeStartOutput = *"true"*) ]]; do
