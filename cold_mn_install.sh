@@ -46,7 +46,6 @@ fi
 GITHUB_DL=https://github.com/CRowdCLassic/crowdclassic-core/releases/download/v0.12.1.9-beta/CRowdCLassicCore-bin.0.12.1.9.x64.linux.tar.gz
 RPCPORT=11998
 CRCLPORT=12875
-NODEIP=$(curl -s4 icanhazip.com)
 
 clear
 cd ~
@@ -117,8 +116,8 @@ fi
 #   echo "Previous installation detected. Deleting after 20s."
    echo "Deleting... Press Crl+C to abort!"
    sleep 20 
-    #kill wallet daemon
-    sudo killall crowdclassicd > /dev/null 2>&1
+    # kill wallet daemon
+    sudo killall -w crowdclassicd > /dev/null 2>&1
     #remove old ufw port allow
     sudo ufw delete allow 12875/tcp > /dev/null 2>&1
     #remove old files
@@ -133,12 +132,13 @@ fi
 fi
 echo
 echo "updating system, please wait..."
-sudo apt-get -y -q update -y
-sudo apt-get -y -q upgrade -y
-#sudo apt-get -y -q dist-upgrade -y
+sudo apt-get -y -q update
+sudo apt-get -y -q upgrade
+# sudo apt-get -y -q dist-upgrade
 echo && echo "Installing Fail2Ban..."
 sleep 3
-apt-get -y -q install fail2ban
+apt-get -y -q install fail2ban -y
+sleep 3
 touch /etc/fail2ban/jail.local
 cat << EOF >> /etc/fail2ban/jail.local
 maxretry = 6
@@ -146,10 +146,11 @@ bantime = 3600
 bantime.increment = true
 bantime.rndtime = 10m
 EOF
+sleep 3
 service fail2ban restart
 echo && echo "Installing UFW..."
 sleep 3
-sudo apt-get -y install ufw
+sudo apt-get -y -q install ufw -y
 echo && echo "Configuring UFW..."
 sleep 3
 sudo ufw default deny incoming
@@ -162,9 +163,9 @@ echo "y" | sudo ufw enable
 echo && echo "Firewall installed and enabled!"
 
 echo "installing sentinel"
-sudo apt-get update
-sudo apt-get install git -y
-sudo apt-get -y install python-virtualenv virtualenv
+# sudo apt-get update
+sudo apt-get -y -q install git -y
+sudo apt-get -y -q install python-virtualenv virtualenv
 cd ~
 git clone https://github.com/CRowdClassic/sentinelLinux.git && cd sentinelLinux
 export LC_ALL=C
@@ -174,14 +175,15 @@ virtualenv ./venv
 sed -i -e 's/dash_conf=\/home\/YOURUSERNAME\/\.crowdclassiccore\/crowdclassic\.conf/dash_conf=~\/\.crowdclassiccore\/crowdclassic.conf/g' sentinel.conf
 
 cd ~
-sudo apt-get install pwgen
-sudo apt-get install libzmq3-dev libminiupnpc-dev libssl-dev libevent-dev -y
-sudo apt-get install build-essential libtool autotools-dev automake pkg-config -y
-sudo apt-get install libssl-dev libevent-dev bsdmainutils software-properties-common -y
-sudo apt-get install libboost-all-dev -y
-sudo add-apt-repository ppa:bitcoin/bitcoin -y
+sudo apt-get -y -q install pwgen -y
+sudo apt-get -y -q install curl tar wget -y 
+# sudo apt-get install libzmq3-dev libminiupnpc-dev libssl-dev libevent-dev -y
+# sudo apt-get install build-essential libtool autotools-dev automake pkg-config -y
+# sudo apt-get install libssl-dev libevent-dev bsdmainutils software-properties-common -y
+# sudo apt-get install libboost-all-dev -y
+# sudo add-apt-repository ppa:bitcoin/bitcoin -y
 sudo apt-get update
-sudo apt-get install libdb4.8-dev libdb4.8++-dev wget -y
+# sudo apt-get install libdb4.8-dev libdb4.8++-dev wget -y
 
 mkdir crowdclassiccore && cd crowdclassiccore
 
@@ -237,7 +239,8 @@ echo "Stopping CRowdCLassic daemon to update configuration file..."
 echo " Waiting 60 seconds before restarting..."
 ./crowdclassic-cli stop
 sleep 60
-#write all data into ../crowdclassicd
+NODEIP=$(curl -s4 icanhazip.com)
+# write all data into ../crowdclassicd
 locateCRowdCLassicConf=~/.crowdclassiccore/crowdclassic.conf
 cat >> $locateCRowdCLassicConf <<EOF
 rpcbind=127.0.0.1
