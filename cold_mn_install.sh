@@ -198,7 +198,7 @@ then
     cd ~/crowdclassiccore
     echo "Found crowdclassicd is running, stopping it..."
     ./crowdclassic-cli stop
-    cp crowdclassic* /usr/local/bin
+    sudo cp crowdclassic* /usr/local/bin
     echo "Waiting 60 seconds before continuing..." 
     sleep 60
 fi
