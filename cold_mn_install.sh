@@ -135,19 +135,6 @@ echo "updating system, please wait..."
 sudo apt-get -y -q update
 sudo apt-get -y -q upgrade
 # sudo apt-get -y -q dist-upgrade
-echo && echo "Installing Fail2Ban..."
-sleep 3
-apt-get -y -q install fail2ban -y
-sleep 3
-touch /etc/fail2ban/jail.local
-cat << EOF >> /etc/fail2ban/jail.local
-maxretry = 6
-bantime = 3600
-bantime.increment = true
-bantime.rndtime = 10m
-EOF
-sleep 3
-service fail2ban restart
 echo && echo "Installing UFW..."
 sleep 3
 sudo apt-get -y -q install ufw -y
@@ -161,8 +148,22 @@ sudo ufw allow $CRCLPORT/tcp
 sudo ufw logging on
 echo "y" | sudo ufw enable
 echo && echo "Firewall installed and enabled!"
-
-echo "installing sentinel"
+echo ""
+echo && echo "Installing Fail2Ban..."
+sleep 3
+apt-get -y -q install fail2ban -y
+sleep 3
+touch /etc/fail2ban/jail.local
+cat << EOF >> /etc/fail2ban/jail.local
+maxretry = 6
+bantime = 3600
+bantime.increment = true
+bantime.rndtime = 10m
+EOF
+sleep 3
+service fail2ban restart
+sleep 3
+echo "Installing sentinel"
 # sudo apt-get update
 sudo apt-get -y -q install git -y
 sudo apt-get -y -q install python-virtualenv virtualenv
@@ -218,6 +219,7 @@ rpcpassword=${rpcpass}" >> crowdclassic.conf
 
 cd ~/crowdclassiccore
 echo "Starting CRowdCLassic daemon from $PWD"
+echo " Waiting 60 seconds before starting..."
 ./crowdclassicd -daemon
 sleep 120
 crowdclassicGetInfoOutput=$(./crowdclassic-cli getinfo)
