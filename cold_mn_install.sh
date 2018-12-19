@@ -135,6 +135,34 @@ echo "updating system, please wait..."
 sudo apt-get -y -q update
 sudo apt-get -y -q upgrade
 # sudo apt-get -y -q dist-upgrade
+echo && echo "Installing Fail2Ban..."
+apt-get -y -q install fail2ban -y
+sleep 3
+systemctl enable fail2ban
+systemctl start fail2ban
+if [ ! -f /etc/fail2ban/jail.local ]; then
+   echo 
+else
+   echo
+touch /etc/fail2ban/jail.local
+cat << EOF >> /etc/fail2ban/jail.local
+[DEFAULT]
+ignoreip = 127.0.0.1/8
+maxretry = 6
+bantime = 3600
+bantime.increment = true
+bantime.rndtime = 10m
+[sshd]
+enabled = true
+[ssh]
+enabled  = true
+port     = ssh
+filter   = sshd
+logpath  = /var/log/auth.log
+EOF
+sleep 3
+systemctl restart fail2ban
+fi
 echo && echo "Installing UFW..."
 sleep 3
 sudo apt-get -y -q install ufw -y
@@ -149,19 +177,6 @@ sudo ufw logging on
 echo "y" | sudo ufw enable
 echo && echo "Firewall installed and enabled!"
 echo ""
-echo && echo "Installing Fail2Ban..."
-sleep 3
-apt-get -y -q install fail2ban -y
-sleep 3
-touch /etc/fail2ban/jail.local
-cat << EOF >> /etc/fail2ban/jail.local
-maxretry = 6
-bantime = 3600
-bantime.increment = true
-bantime.rndtime = 10m
-EOF
-sleep 3
-service fail2ban restart
 sleep 3
 echo "Installing sentinel"
 # sudo apt-get update
