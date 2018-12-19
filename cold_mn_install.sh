@@ -178,13 +178,13 @@ sed -i -e 's/dash_conf=\/home\/YOURUSERNAME\/\.crowdclassiccore\/crowdclassic\.c
 cd ~
 sudo apt-get -y -q install pwgen -y
 sudo apt-get -y -q install curl tar wget -y 
-# sudo apt-get install libzmq3-dev libminiupnpc-dev libssl-dev libevent-dev -y
-# sudo apt-get install build-essential libtool autotools-dev automake pkg-config -y
-# sudo apt-get install libssl-dev libevent-dev bsdmainutils software-properties-common -y
-# sudo apt-get install libboost-all-dev -y
-# sudo add-apt-repository ppa:bitcoin/bitcoin -y
+sudo apt-get install libzmq3-dev libminiupnpc-dev libssl-dev libevent-dev -y
+sudo apt-get install build-essential libtool autotools-dev automake pkg-config -y
+sudo apt-get install libssl-dev libevent-dev bsdmainutils software-properties-common -y
+sudo apt-get -y -q install libboost-all-dev -y
+sudo add-apt-repository ppa:bitcoin/bitcoin -y
 sudo apt-get update
-# sudo apt-get install libdb4.8-dev libdb4.8++-dev wget -y
+sudo apt-get install libdb4.8-dev libdb4.8++-dev -y
 
 mkdir crowdclassiccore && cd crowdclassiccore
 
