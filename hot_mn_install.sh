@@ -138,6 +138,7 @@ sudo apt-get -y -q upgrade -y
 echo && echo "Installing Fail2Ban..."
 sleep 3
 apt-get -y -q install fail2ban
+sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
 touch /etc/fail2ban/jail.local
 cat << EOF >> /etc/fail2ban/jail.local
 maxretry = 6
