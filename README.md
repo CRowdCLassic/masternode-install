@@ -1,5 +1,4 @@
 # CRowdCLassic Masternode Setup Guide (Ubuntu 16.04)
-![Example-Logo](https://crcl.cryptocrowdclub.com/img/logo.png)
 
 This guide will assist you in setting up a CRowdCLassic Masternode on a Linux Server running Ubuntu 16.04.
 
